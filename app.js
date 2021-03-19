@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 // express app
 const app = express();
@@ -9,14 +10,16 @@ app.set('view engine', 'ejs');
 // listen request
 app.listen(3000);
 
+app.use(morgan('dev'));
+
 // use() is used as a middleware function and accepts on callback function as an argument
-app.use((req, res, next) => { // next object mandatory to pass and use as a function to move to next middleware
-  console.log('new request made');
-  console.log('host: ', req.hostname);
-  console.log('path: ', req.path);
-  console.log('method: ', req.method);
-  next(); // a methods helps to move to next middleware
-})
+// app.use((req, res, next) => { // next object mandatory to pass and use as a function to move to next middleware
+//   console.log('new request made');
+//   console.log('host: ', req.hostname);
+//   console.log('path: ', req.path);
+//   console.log('method: ', req.method);
+//   next(); // a methods helps to move to next middleware
+// })
 
 app.get('/', (req, res) => {
   const blogs = [
