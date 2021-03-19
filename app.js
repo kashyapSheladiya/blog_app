@@ -17,9 +17,8 @@ app.get('/about', (req, res) => {
   res.render('about');
 })
 
-// redirects
-app.get('/about-us', (req, res) => {
-  res.redirect('/about');
+app.get('/blogs/create', (req, res) => {
+  res.render('create');
 })
 
 // 404 - always at a bottom, similar to default if all above routes doesn't match
