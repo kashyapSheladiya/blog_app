@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const Blog = require('./models/blog'); // importing blog model
 
 // express app
 const app = express();
@@ -13,8 +14,42 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // register view engine
 app.set('view engine', 'ejs');
-
+// morgan middleware
 app.use(morgan('dev'));
+
+// mongoose and mongodb sanbox routes - 
+// get handler to create blog
+app.get('/add-blog', (req, res) => {
+  const blog = new Blog({  // creating instance of a Blog model with parameters.
+    title: 'second new blog',
+    snippet: 'more about second blog',
+    body: 'Some lorem ipsum about first new blog'
+  });
+
+  blog.save() // save method to save instance in database
+    .then((result) => { // a promise coz it takes some time to save in db
+      res.send(result)
+    })
+    .catch((err) => console.log(err));
+});
+
+// get handler to fetch all blogs from db
+app.get('/all-blogs', (req, res) => {
+  Blog.find() // gets all collection of particular model
+    .then((results) => {
+      res.send(results);
+    })
+    .catch((err) => console.log(err));
+});
+
+// get handler to fetch single blog from db
+app.get('/blog', (req, res) => {
+  Blog.findById('6054d8eaf8ad4859d133463c') // gets all collection of particular model
+    .then((results) => {
+      res.send(results);
+    })
+    .catch((err) => console.log(err));
+});
 
 // middleware & static files
 app.use(express.static('public'));
