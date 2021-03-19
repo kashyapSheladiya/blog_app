@@ -1,14 +1,18 @@
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
 // express app
 const app = express();
 
+// connect to mongodb
+const dbURI = 'your-monodb-uri'
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then((result) => app.listen(3000)) // it takes some time to connect to db, so app should only listen to port once it is connected to db.
+        .catch((err) => console.log(err));
+
 // register view engine
 app.set('view engine', 'ejs');
-
-// listen request
-app.listen(3000);
 
 app.use(morgan('dev'));
 
