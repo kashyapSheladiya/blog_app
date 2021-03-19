@@ -12,6 +12,9 @@ app.listen(3000);
 
 app.use(morgan('dev'));
 
+// middleware & static files
+app.use(express.static('public'));
+
 // use() is used as a middleware function and accepts on callback function as an argument
 // app.use((req, res, next) => { // next object mandatory to pass and use as a function to move to next middleware
 //   console.log('new request made');
