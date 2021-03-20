@@ -19,6 +19,8 @@ app.use(morgan('dev'));
 
 // middleware & static files
 app.use(express.static('public'));
+// middleware to pass data in object, for accepting form data
+app.use(express.urlencoded({ extended: true }));
 
 // use() is used as a middleware function and accepts on callback function as an argument
 // app.use((req, res, next) => { // next object mandatory to pass and use as a function to move to next middleware
@@ -45,6 +47,15 @@ app.get('/blogs', (req, res) => {
   Blog.find().sort({ createdAt: -1 })
     .then((results) => {
       res.render('index', {title: 'All Blogs', blogs: results})
+    })
+    .catch((err) => console.log(err));
+});
+
+app.post('/blogs', (req, res) => {
+  const blog = new Blog(req.body);
+  blog.save()
+    .then((result) => {
+      res.redirect('/blogs');
     })
     .catch((err) => console.log(err));
 });
