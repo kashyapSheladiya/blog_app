@@ -17,40 +17,6 @@ app.set('view engine', 'ejs');
 // morgan middleware
 app.use(morgan('dev'));
 
-// mongoose and mongodb sanbox routes - 
-// get handler to create blog
-app.get('/add-blog', (req, res) => {
-  const blog = new Blog({  // creating instance of a Blog model with parameters.
-    title: 'second new blog',
-    snippet: 'more about second blog',
-    body: 'Some lorem ipsum about first new blog'
-  });
-
-  blog.save() // save method to save instance in database
-    .then((result) => { // a promise coz it takes some time to save in db
-      res.send(result)
-    })
-    .catch((err) => console.log(err));
-});
-
-// get handler to fetch all blogs from db
-app.get('/all-blogs', (req, res) => {
-  Blog.find() // gets all collection of particular model
-    .then((results) => {
-      res.send(results);
-    })
-    .catch((err) => console.log(err));
-});
-
-// get handler to fetch single blog from db
-app.get('/blog', (req, res) => {
-  Blog.findById('6054d8eaf8ad4859d133463c') // gets all collection of particular model
-    .then((results) => {
-      res.send(results);
-    })
-    .catch((err) => console.log(err));
-});
-
 // middleware & static files
 app.use(express.static('public'));
 
@@ -63,24 +29,31 @@ app.use(express.static('public'));
 //   next(); // a methods helps to move to next middleware
 // })
 
+// routes
+
 app.get('/', (req, res) => {
-  const blogs = [
-    {title: 'Yoshi finds eggs', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'Mario finds stars', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-    {title: 'How to defeat bowser', snippet: 'Lorem ipsum dolor sit amet consectetur'},
-  ];
-  res.render('index', { title: 'Home', blogs });
-})
+  res.redirect('/blogs');
+});
 
 app.get('/about', (req, res) => {
   res.render('about', { title: 'About' });
-})
+});
+
+// blog routes
+
+app.get('/blogs', (req, res) => {
+  Blog.find().sort({ createdAt: -1 })
+    .then((results) => {
+      res.render('index', {title: 'All Blogs', blogs: results})
+    })
+    .catch((err) => console.log(err));
+});
 
 app.get('/blogs/create', (req, res) => {
   res.render('create', { title: 'Create a New Blog' });
-})
+});
 
 // 404 - always at a bottom, similar to default if all above routes doesn't match
 app.use((req, res) => {
   res.status(404).render('404', { title: '404' });  //necessary to pass status_code. else it will use 200 success.
-})
+});
