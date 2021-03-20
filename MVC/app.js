@@ -27,7 +27,7 @@ app.get('/about', (req, res) => {
 });
 
 // blog routes
-app.use(blogRoutes);
+app.use('/blogs', blogRoutes);
 
 // 404 - always at a bottom, similar to default if all above routes doesn't match
 app.use((req, res) => {

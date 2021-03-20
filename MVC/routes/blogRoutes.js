@@ -3,7 +3,7 @@ const Blog = require('../models/blog'); // importing blog model, .. coz we need 
 
 const router = express.Router(); // create new router instance of express
 
-router.get('/blogs', (req, res) => {
+router.get('/', (req, res) => {
   Blog.find().sort({ createdAt: -1 })
     .then((results) => {
       res.render('index', {title: 'All Blogs', blogs: results})
@@ -11,7 +11,7 @@ router.get('/blogs', (req, res) => {
     .catch((err) => console.log(err));
 });
 
-router.post('/blogs', (req, res) => {
+router.post('/', (req, res) => {
   const blog = new Blog(req.body);
   blog.save()
     .then((result) => {
@@ -21,11 +21,11 @@ router.post('/blogs', (req, res) => {
 });
 
 
-router.get('/blogs/create', (req, res) => {
+router.get('/create', (req, res) => {
   res.render('create', { title: 'Create a New Blog' });
 });
 
-router.get('/blogs/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const id = req.params.id;
   Blog.findById(id)
     .then((result) => {
@@ -34,7 +34,7 @@ router.get('/blogs/:id', (req, res) => {
     .catch((err) => console.log(err));
 });
 
-router.delete('/blogs/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
   const id = req.params.id;
 
   Blog.findByIdAndDelete(id)
