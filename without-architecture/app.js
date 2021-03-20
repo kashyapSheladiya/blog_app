@@ -8,7 +8,7 @@ const { render } = require('ejs');
 const app = express();
 
 // connect to mongodb
-const dbURI = 'your-monodb-uri'
+const dbURI = 'your-mongodb-uri'
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         .then((result) => app.listen(3000)) // it takes some time to connect to db, so app should only listen to port once it is connected to db.
         .catch((err) => console.log(err));
